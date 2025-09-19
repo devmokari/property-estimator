@@ -3,113 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🏡 Property Price Estimator</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #f8f9fa;
-      }
-      h1 {
-        text-align: center;
-        color: #2c3e50;
-      }
-      input,
-      button {
-        padding: 10px;
-        font-size: 16px;
-        margin-top: 10px;
-        width: 100%;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-      }
-      button {
-        background: #3498db;
-        color: white;
-        cursor: pointer;
-        border: none;
-      }
-      button:hover {
-        background: #2980b9;
-      }
-      .result {
-        margin-top: 20px;
-        padding: 15px;
-        background: white;
-        border-radius: 6px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-      }
-      table,
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
-      th {
-        background: #f2f2f2;
-        text-align: left;
-      }
-    </style>
+    <title>🏡 Property Value Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Font Awesome icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
-    <h1>🏡 Property Price Estimator</h1>
+    <h1>🏡 Property Finder</h1>
 
-    <input type="text" id="addressInput" placeholder="Enter property address" />
-    <button onclick="getEstimate()">Estimate Price</button>
-
-    <div id="output" class="result" style="display: none">
-      <h2>Property Details</h2>
-      <table id="propertyTable"></table>
+    <div class="input-container">
+      <input
+        type="text"
+        id="addressInput"
+        placeholder="Enter property address"
+        autocomplete="off"
+        oninput="fetchSuggestions(this.value)"
+      />
+      <button id="searchBtn" onclick="getEstimate()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+      <div id="suggestions"></div>
     </div>
 
-    <script>
-      const API_URL =
-        "https://g7eku3ruwr6e2hduscxavmi6zy0wsiel.lambda-url.ap-southeast-2.on.aws/"; // replace with your Lambda URL
+    <div id="output" class="result" style="display: none">
+      <div class="property-card">
+        <h2 id="propertyTitle"></h2>
+        <div class="property-details" id="propertyDetails"></div>
+      </div>
 
-      async function getEstimate() {
-        const address = document.getElementById("addressInput").value.trim();
-        if (!address) {
-          alert("Please enter an address");
-          return;
-        }
+      <!-- Raw JSON response -->
+      <div class="raw-box">
+        <h3 onclick="toggleRaw()">📝 Raw Response (click to toggle)</h3>
+        <pre id="rawResponse" style="display: none"></pre>
+      </div>
+    </div>
 
-        try {
-          const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ address }),
-          });
-
-          const data = await response.json();
-          console.log("Response:", data);
-
-          let result = data;
-          if (data.estimated_price) {
-            // Sometimes model returns JSON string inside estimated_price
-            try {
-              result = JSON.parse(data.estimated_price);
-            } catch {}
-          }
-
-          const table = document.getElementById("propertyTable");
-          table.innerHTML = "";
-          for (let key in result) {
-            let row = `<tr><th>${key}</th><td>${result[key]}</td></tr>`;
-            table.innerHTML += row;
-          }
-
-          document.getElementById("output").style.display = "block";
-        } catch (err) {
-          alert("Error: " + err.message);
-        }
-      }
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
