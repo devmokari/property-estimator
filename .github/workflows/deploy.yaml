@@ -1,4 +1,10 @@
-# .github/workflows/deploy.yml
+name: Build and Deploy
+
+on: # 👈 event trigger
+  push: # run on every push to main
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,6 +13,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm install
 
       - name: Build
         run: npm run build
