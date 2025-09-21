@@ -1,3 +1,12 @@
-- name: Inject GEOAPIFY_KEY
-  run: sed -i "s|__GEOAPIFY_KEY__|${{ secrets.GEOAPIFY_KEY }}|g" app.js
+# .github/workflows/deploy.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GEOAPIFY_KEY: ${{ secrets.GEOAPIFY_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Build
+        run: npm run build
