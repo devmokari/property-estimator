@@ -1,26 +1,2 @@
-name: Build and Deploy
-
-on: # 👈 event trigger
-  push: # run on every push to main
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      GEOAPIFY_KEY: ${{ secrets.GEOAPIFY_KEY }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install
-        run: npm install
-
-      - name: Build
-        run: npm run build
+- name: Inject secret
+  run: sed -i "s|__GEOAPIFY_KEY__|${{ secrets.GEOAPIFY_KEY }}|g" app.js
