@@ -1,6 +1,6 @@
 const API_URL =
   "https://g7eku3ruwr6e2hduscxavmi6zy0wsiel.lambda-url.ap-southeast-2.on.aws/";
-const GEOAPIFY_KEY = "8fa427a20e3d4b73b081e0864e12c16c";
+const AUTOCOMPLETE_URL = `${API_URL}autocomplete`;
 
 function setLoading(isLoading) {
   const btn = document.getElementById("searchBtn");
@@ -19,12 +19,16 @@ async function fetchSuggestions(query) {
   box.innerHTML = "";
   if (query.length < 3) return;
 
-  const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(
-    query
-  )}&apiKey=${GEOAPIFY_KEY}`;
-
   try {
-    const data = await fetch(url).then((r) => r.json());
+    const url = new URL(AUTOCOMPLETE_URL);
+    url.searchParams.set("text", query);
+
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Autocomplete failed: ${res.status}`);
+    }
+
+    const data = await res.json();
     data.features.forEach((f) => {
       const div = document.createElement("div");
       div.textContent = f.properties.formatted;
