@@ -1,0 +1,3 @@
+- name: Inject GEOAPIFY_KEY
+  run: sed -i "s|__GEOAPIFY_KEY__|${{ secrets.GEOAPIFY_KEY }}|g" app.js
+
