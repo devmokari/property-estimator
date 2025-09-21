@@ -20,6 +20,7 @@ For local development you can set the environment variable before running the
 Lambda locally. An `.env.example` file is provided at the project root—copy it
 to `.env` and update the placeholder value, or export the variable manually:
 
+
 ```bash
 export GEOAPIFY_API_KEY=your-key-here
 ```
