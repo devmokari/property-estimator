@@ -1,6 +1,6 @@
 const API_URL =
   "https://g7eku3ruwr6e2hduscxavmi6zy0wsiel.lambda-url.ap-southeast-2.on.aws/";
-const GEOAPIFY_KEY = "8fa427a20e3d4b73b081e0864e12c16c";
+const GEOAPIFY_KEY = "__GEOAPIFY_KEY__";
 
 function setLoading(isLoading) {
   const btn = document.getElementById("searchBtn");
