@@ -1,6 +1,6 @@
 const API_URL =
   "https://g7eku3ruwr6e2hduscxavmi6zy0wsiel.lambda-url.ap-southeast-2.on.aws/";
-const GEOAPIFY_KEY = process.env.GEOAPIFY_KEY;
+const GEOAPIFY_KEY = import.meta.env.VITE_GEOAPIFY_KEY;
 
 function setLoading(isLoading) {
   const btn = document.getElementById("searchBtn");
